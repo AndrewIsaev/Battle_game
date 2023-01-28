@@ -32,10 +32,12 @@ class BaseUnit(ABC):
 
     def equip_weapon(self, weapon: Weapon):
         # TODO присваиваем нашему герою новое оружие
+        self.weapon = weapon
         return f"{self.name} экипирован оружием {self.weapon.name}"
 
     def equip_armor(self, armor: Armor):
         # TODO одеваем новую броню
+        self.armor = armor
         return f"{self.name} экипирован броней {self.weapon.name}"
 
     def _count_damage(self, target: BaseUnit) -> int:
@@ -54,13 +56,15 @@ class BaseUnit(ABC):
             target.stamina -= target.armor.stamina_per_turn * target.unit_class.stamina
             damage -= target.armor.defence * target.unit_class.armor
 
+        damage = round(damage, 1)
         target.get_damage(damage)
         return damage
 
     def get_damage(self, damage: int) -> Optional[int]:
         # TODO получение урона целью
         #      присваиваем новое значение для аттрибута self.hp
-        self.hp -= damage
+        if damage>0:
+            self.hp -= damage
 
     @abstractmethod
     def hit(self, target: BaseUnit) -> str:
@@ -99,7 +103,7 @@ class PlayerUnit(BaseUnit):
         damage = self._count_damage(target)
         if damage > 0:
             return f"{self.name} используя {self.weapon.name} пробивает {target.armor.name} соперника и наносит {damage} урона."
-        f"{self.name} используя {self.weapon.name} наносит удар, но {target.armor.name} cоперника его останавливает."
+        return f"{self.name} используя {self.weapon.name} наносит удар, но {target.armor.name} cоперника его останавливает."
         # TODO результат функции должен возвращать следующие строки:
 
 
@@ -124,4 +128,4 @@ class EnemyUnit(BaseUnit):
         damage = self._count_damage(target)
         if damage > 0:
             return f"{self.name} используя {self.weapon.name} пробивает {target.armor.name} соперника и наносит {damage} урона."
-        f"{self.name} используя {self.weapon.name} наносит удар, но {target.armor.name} cоперника его останавливает."
+        return f"{self.name} используя {self.weapon.name} наносит удар, но {target.armor.name} cоперника его останавливает."
