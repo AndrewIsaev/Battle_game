@@ -28,49 +28,40 @@ class Weapon:
         unknown = marshmallow.EXCLUDE
 
     @property
-    def damage(self)->float:
+    def damage(self) -> float:
         return uniform(self.min_damage, self.max_damage)
 
 
 @dataclass
 class EquipmentData:
-    # TODO содержит 2 списка - с оружием и с броней
     weapons: list[Weapon]
     armors: list[Armor]
 
 
 class Equipment:
-
     def __init__(self) -> None:
         self.equipment = self._get_equipment_data()
 
-    def get_weapon(self, weapon_name:str) -> Optional[Weapon]:
-        # TODO возвращает объект оружия по имени
+    def get_weapon(self, weapon_name: str) -> Optional[Weapon]:
         for weapon in self.equipment.weapons:
             if weapon.name == weapon_name:
                 return weapon
         return None
 
-
     def get_armor(self, armor_name: str) -> Optional[Armor]:
-        # TODO возвращает объект брони по имени
         for armor in self.equipment.armors:
             if armor.name == armor_name:
                 return armor
         return None
 
-
     def get_weapons_names(self) -> list[str]:
-        # TODO возвращаем список с оружием
         return [weapon.name for weapon in self.equipment.weapons]
 
     def get_armors_names(self) -> list[str]:
-        # TODO возвращаем список с броней
         return [armor.name for armor in self.equipment.armors]
 
     @staticmethod
     def _get_equipment_data() -> EquipmentData:
-        # TODO этот метод загружает json в переменную EquipmentData
         with open("./data/equipment.json") as file:
             data = json.load(file)
             equipment_schema = marshmallow_dataclass.class_schema(EquipmentData)

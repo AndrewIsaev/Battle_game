@@ -10,6 +10,7 @@ class Skill(ABC):
     """
     Базовый класс умения
     """
+
     def __init__(self) -> None:
         self.user: BaseUnit | None = None
         self.target: BaseUnit | None = None

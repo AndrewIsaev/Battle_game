@@ -1,11 +1,10 @@
-from typing import Union, Type, Any, Optional
+from typing import Any, Optional
 
 from base import Arena
 from classes import unit_classes
 from equipment import Equipment
 from flask import Flask, render_template, request, redirect, url_for
 from unit import BaseUnit, PlayerUnit, EnemyUnit
-
 
 app = Flask(__name__)
 
@@ -19,7 +18,6 @@ arena = Arena()
 
 @app.route("/")
 def menu_page() -> str:
-    # TODO рендерим главное меню (шаблон index.html)
     return render_template("index.html")
 
 
@@ -66,9 +64,9 @@ def choose_hero() -> str | Any:
     if request.method == "GET":
         equipment: Equipment = Equipment()
         res = {
-            "header": "Choose hero",  # для названия страниц
-            "classes": unit_classes,  # для названия классов
-            "weapons": equipment.get_weapons_names(),  # для названия оружия
+            "header": "Choose hero",
+            "classes": unit_classes,
+            "weapons": equipment.get_weapons_names(),
             "armors": equipment.get_armors_names()
         }
         return render_template("hero_choosing.html", result=res)
@@ -109,6 +107,7 @@ def choose_enemy() -> str | Any:
         heroes["enemy"] = enemy
         return redirect(url_for("start_fight"))
     return ""
+
 
 if __name__ == "__main__":
     app.run()

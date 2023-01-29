@@ -20,9 +20,6 @@ class Arena(metaclass=BaseSingleton):
     game_is_running: bool = False
 
     def start_game(self, player: BaseUnit | Any, enemy: BaseUnit | Any) -> None:
-        # TODO НАЧАЛО ИГРЫ -> None
-        # TODO присваиваем экземпляру класса аттрибуты "игрок" и "противник"
-        # TODO а также выставляем True для свойства "началась ли игра"
         self.player = player
         self.enemy = enemy
         self.game_is_running = True
@@ -72,10 +69,10 @@ class Arena(metaclass=BaseSingleton):
 
     def player_hit(self) -> str:
         res = self.player.hit(self.enemy)
-        a = self.next_turn()
-        return f"{res}\n{a}"
+        enemy_turn = self.next_turn()
+        return f"{res}</br>{enemy_turn}"
 
     def player_use_skill(self) -> str:
         res = self.player.use_skill(self.enemy)
-        a = self.next_turn()
-        return f"{res}\n{a}"
+        enemy_turn = self.next_turn()
+        return f"{res}</br>{enemy_turn}"

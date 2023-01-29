@@ -31,12 +31,10 @@ class BaseUnit(ABC):
         return round(self.stamina, 1)
 
     def equip_weapon(self, weapon: Optional[Weapon]) -> Union[Weapon, str]:
-        # TODO присваиваем нашему герою новое оружие
         self.weapon = weapon
         return f"{self.name} экипирован оружием {self.weapon.name}"
 
     def equip_armor(self, armor: Optional[Armor]) -> Union[Armor, str]:
-        # TODO одеваем новую броню
         self.armor = armor
         return f"{self.name} экипирован броней {self.weapon.name}"
 
@@ -53,8 +51,6 @@ class BaseUnit(ABC):
         return damage
 
     def get_damage(self, damage: float) -> None:
-        # TODO получение урона целью
-        #      присваиваем новое значение для аттрибута self.hp
         if damage > 0:
             self.hp -= damage
 
@@ -94,9 +90,10 @@ class PlayerUnit(BaseUnit):
 
         damage = self._count_damage(target)
         if damage > 0:
-            return f"{self.name} используя {self.weapon.name} пробивает {target.armor.name} соперника и наносит {damage} урона."
-        return f"{self.name} используя {self.weapon.name} наносит удар, но {target.armor.name} cоперника его останавливает."
-        # TODO результат функции должен возвращать следующие строки:
+            return f"{self.name} используя {self.weapon.name} пробивает {target.armor.name} " \
+                   f"соперника и наносит {damage} урона."
+        return f"{self.name} используя {self.weapon.name} наносит удар, но {target.armor.name} " \
+               f"cоперника его останавливает."
 
 
 class EnemyUnit(BaseUnit):
@@ -113,11 +110,12 @@ class EnemyUnit(BaseUnit):
 
         if not self._is_skill_used and self.stamina >= self.unit_class.skill.stamina:
             return self.use_skill(target)
-        # TODO результат функции должен возвращать результат функции skill.use или же следующие строки:
         if self.stamina < self.weapon.stamina_per_hit:
             return f"{self.name} попытался использовать {self.weapon.name}, но у него не хватило выносливости."
 
         damage = self._count_damage(target)
         if damage > 0:
-            return f"{self.name} используя {self.weapon.name} пробивает {target.armor.name} соперника и наносит {damage} урона."
-        return f"{self.name} используя {self.weapon.name} наносит удар, но {target.armor.name} cоперника его останавливает."
+            return f"{self.name} используя {self.weapon.name} пробивает {target.armor.name}" \
+                   f" соперника и наносит {damage} урона."
+        return f"{self.name} используя {self.weapon.name} наносит удар, но {target.armor.name}" \
+               f" cоперника его останавливает."
