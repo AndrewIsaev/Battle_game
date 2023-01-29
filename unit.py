@@ -1,5 +1,7 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from random import randint
+
 from equipment import Weapon, Armor
 from classes import UnitClass
 from typing import Optional, Union
@@ -107,9 +109,10 @@ class EnemyUnit(BaseUnit):
         Если умение не применено, противник наносит простой удар, где также используется
         функция _count_damage(target
         """
-
         if not self._is_skill_used and self.stamina >= self.unit_class.skill.stamina:
-            return self.use_skill(target)
+            if randint(0, 100) < 10:
+                return self.use_skill(target=target)
+
         if self.stamina < self.weapon.stamina_per_hit:
             return f"{self.name} попытался использовать {self.weapon.name}, но у него не хватило выносливости."
 
