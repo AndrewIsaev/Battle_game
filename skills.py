@@ -1,6 +1,6 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from unit import BaseUnit
@@ -10,32 +10,33 @@ class Skill(ABC):
     """
     Базовый класс умения
     """
-    user = None
-    target = None
+    def __init__(self) -> None:
+        self.user: BaseUnit | None = None
+        self.target: BaseUnit | None = None
 
     @property
     @abstractmethod
-    def name(self):
+    def name(self) -> str:
         pass
 
     @property
     @abstractmethod
-    def stamina(self):
+    def stamina(self) -> float:
         pass
 
     @property
     @abstractmethod
-    def damage(self):
+    def damage(self) -> float:
         pass
 
     @abstractmethod
     def skill_effect(self) -> str:
         pass
 
-    def _is_stamina_enough(self):
+    def _is_stamina_enough(self) -> bool:
         return self.user.stamina > self.stamina
 
-    def use(self, user: BaseUnit, target: BaseUnit) -> str:
+    def use(self, user: Optional[BaseUnit], target: Optional[BaseUnit]) -> str:
         """
         Проверка, достаточно ли выносливости у игрока для применения умения.
         Для вызова скилла везде используем просто use
@@ -53,11 +54,6 @@ class FuryPunch(Skill):
     damage = 12
 
     def skill_effect(self) -> str:
-        # TODO логика использования скилла -> return str
-        # TODO в классе нам доступны экземпляры user и target - можно использовать любые их методы
-        # TODO именно здесь происходит уменшение стамины у игрока применяющего умение и
-        # TODO уменьшение здоровья цели.
-        # TODO результат применения возвращаем строкой
         self.user.stamina -= self.stamina
         self.target.hp -= self.damage
         return f"{self.user.name} использует {self.name} и наносит {self.damage} урона сопернику."
@@ -68,7 +64,7 @@ class HardShot(Skill):
     stamina = 5
     damage = 15
 
-    def skill_effect(self):
+    def skill_effect(self) -> str:
         self.user.stamina -= self.stamina
         self.target.hp -= self.damage
         return f"{self.user.name} использует {self.name} и наносит {self.damage} урона сопернику."

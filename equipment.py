@@ -28,7 +28,7 @@ class Weapon:
         unknown = marshmallow.EXCLUDE
 
     @property
-    def damage(self):
+    def damage(self)->float:
         return uniform(self.min_damage, self.max_damage)
 
 
@@ -41,22 +41,24 @@ class EquipmentData:
 
 class Equipment:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.equipment = self._get_equipment_data()
 
-    def get_weapon(self, weapon_name) -> Weapon | str:
+    def get_weapon(self, weapon_name:str) -> Optional[Weapon]:
         # TODO возвращает объект оружия по имени
         for weapon in self.equipment.weapons:
             if weapon.name == weapon_name:
                 return weapon
-        return "Weapon not found"
+        return None
 
-    def get_armor(self, armor_name) -> Armor | str:
+
+    def get_armor(self, armor_name: str) -> Optional[Armor]:
         # TODO возвращает объект брони по имени
         for armor in self.equipment.armors:
             if armor.name == armor_name:
                 return armor
-        return "Armor not found"
+        return None
+
 
     def get_weapons_names(self) -> list[str]:
         # TODO возвращаем список с оружием

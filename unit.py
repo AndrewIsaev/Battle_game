@@ -2,7 +2,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from equipment import Weapon, Armor
 from classes import UnitClass
-from typing import Optional
+from typing import Optional, Union
 
 
 class BaseUnit(ABC):
@@ -14,41 +14,33 @@ class BaseUnit(ABC):
         """
         При инициализации класса Unit используем свойства класса UnitClass
         """
-        self.name = name
-        self.unit_class = unit_class
-        self.hp = unit_class.max_health
-        self.stamina = unit_class.max_stamina
-        self.weapon = None
-        self.armor = None
-        self._is_skill_used = False
+        self.name: str = name
+        self.unit_class: UnitClass = unit_class
+        self.hp: float = unit_class.max_health
+        self.stamina: float = unit_class.max_stamina
+        self.weapon: Weapon | None = None
+        self.armor: Armor | None = None
+        self._is_skill_used: bool = False
 
     @property
-    def health_points(self):
+    def health_points(self) -> float:
         return round(self.hp, 1)
 
     @property
-    def stamina_points(self):
+    def stamina_points(self) -> float:
         return round(self.stamina, 1)
 
-    def equip_weapon(self, weapon: Weapon):
+    def equip_weapon(self, weapon: Optional[Weapon]) -> Union[Weapon, str]:
         # TODO присваиваем нашему герою новое оружие
         self.weapon = weapon
         return f"{self.name} экипирован оружием {self.weapon.name}"
 
-    def equip_armor(self, armor: Armor):
+    def equip_armor(self, armor: Optional[Armor]) -> Union[Armor, str]:
         # TODO одеваем новую броню
         self.armor = armor
         return f"{self.name} экипирован броней {self.weapon.name}"
 
-    def _count_damage(self, target: BaseUnit) -> int:
-        # TODO Эта функция должна содержать:
-        #  логику расчета урона игрока
-        #  логику расчета брони цели
-        #  здесь же происходит уменьшение выносливости атакующего при ударе
-        #  и уменьшение выносливости защищающегося при использовании брони
-        #  если у защищающегося нехватает выносливости - его броня игнорируется
-        #  после всех расчетов цель получает урон - target.get_damage(damage)
-        #  и возвращаем предполагаемый урон для последующего вывода пользователю в текстовом виде
+    def _count_damage(self, target: Optional[BaseUnit]) -> float:
         damage = self.weapon.damage * self.unit_class.attack
         self.stamina -= self.weapon.stamina_per_hit
 
@@ -60,20 +52,20 @@ class BaseUnit(ABC):
         target.get_damage(damage)
         return damage
 
-    def get_damage(self, damage: int) -> Optional[int]:
+    def get_damage(self, damage: float) -> None:
         # TODO получение урона целью
         #      присваиваем новое значение для аттрибута self.hp
-        if damage>0:
+        if damage > 0:
             self.hp -= damage
 
     @abstractmethod
-    def hit(self, target: BaseUnit) -> str:
+    def hit(self, target: Optional[BaseUnit]) -> str:
         """
         этот метод будет переопределен ниже
         """
         pass
 
-    def use_skill(self, target: BaseUnit) -> str:
+    def use_skill(self, target: Optional[BaseUnit]) -> str:
         """
         метод использования умения.
         если умение уже использовано возвращаем строку
@@ -90,7 +82,7 @@ class BaseUnit(ABC):
 
 class PlayerUnit(BaseUnit):
 
-    def hit(self, target: BaseUnit) -> str:
+    def hit(self, target: Optional[BaseUnit]) -> str:
         """
         функция удар игрока:
         здесь происходит проверка достаточно ли выносливости для нанесения удара.
@@ -109,7 +101,7 @@ class PlayerUnit(BaseUnit):
 
 class EnemyUnit(BaseUnit):
 
-    def hit(self, target: BaseUnit) -> str:
+    def hit(self, target: Optional[BaseUnit]) -> str:
         """
         функция удар соперника
         должна содержать логику применения соперником умения
