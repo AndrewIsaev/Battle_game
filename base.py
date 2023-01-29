@@ -70,9 +70,9 @@ class Arena(metaclass=BaseSingleton):
     def player_hit(self) -> str:
         res = self.player.hit(self.enemy)
         enemy_turn = self.next_turn()
-        return f"{res}</br>{enemy_turn}"
+        return f"{res}\n{enemy_turn}"
 
     def player_use_skill(self) -> str:
         res = self.player.use_skill(self.enemy)
         enemy_turn = self.next_turn()
-        return f"{res}</br>{enemy_turn}"
+        return f"{res}\n{enemy_turn}"
