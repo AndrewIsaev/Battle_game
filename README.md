@@ -20,7 +20,7 @@ A small game with a web interface about the battle of heroes in the style of old
 ## Start app
 1. Clone project
    ```
-   git clone https://github.com/AndrewIsaev/Advertisement_Service.git
+   git clone https://github.com/AndrewIsaev/Battle_game.git
 2. Create virtual environment
    ```
     python3 -m venv venv
@@ -44,4 +44,3 @@ A small game with a web interface about the battle of heroes in the style of old
 - `equipment.py`: equipment entity
 - `skills.py`: skills entity
 - `unit.py`: unit entity
-
