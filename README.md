@@ -44,3 +44,4 @@ A small game with a web interface about the battle of heroes in the style of old
 - `equipment.py`: equipment entity
 - `skills.py`: skills entity
 - `unit.py`: unit entity
+
