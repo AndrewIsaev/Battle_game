@@ -2,11 +2,8 @@
 A small game with a web interface about the battle of heroes in the style of old-school browser games.
 ***
 ## Features
-- Authorization/Authentication users
-- Distribution of roles between users
-- CRUD for advertisement
-- Search advertisement
-- Comments for advertisement
+- You can choose a hero for yourself and the enemy and join the battle!
+- Use your weapons and skills to defeat the enemy!
 ***
 ## Technology stack
 - Python 3.10.6
